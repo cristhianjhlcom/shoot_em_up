@@ -2,6 +2,35 @@
 
 ## Process
 
+### 05/01/2025
+
+- **16:14:03**. Update windows size constant to 1260 width and 760 height.
+- **16:12:56**. Update graphic image to `src/graphics/rocket.png`.
+- **16:11:03**. Add `-lSDL2_image` linked on compile script.
+- **16:06:44**. Update main entry point.
+    - Declare `player` variable of `entity_t` type.
+    - Set player default with `memset()`.
+    - Set `player` x and y properties as `100` and `texture` as `load_texture("graphics/rocket.png")`.
+    - Inside game loop call blit function with `player` properties.
+- **16:02:32**. Add new `entity_t` struct. This struct represents the player.
+    - x and y coordinates.
+    - textures that will use.
+- **15:46:32**. Add blit function.
+    - This function simple draws the specified texture on screen at the specified x and y coordinates.
+- **15:11:43**. Add load texture function.
+    - Define the `load_texture` function signature.
+    - Create a pointer of `texture` that is type `SDL_Texture`.
+    - Log a message with specificy category and priority.
+    - Save the texture on variable using `IMG_LoadTexture` function.
+    - return the `texture` pointer.
+    - This function is simple it calls the `LoadTexture` function to load an imagen and return as a texture.
+- **15:05:58**. Add `SDL_Image`.
+    - This line initialice image library with `IMG_Init` function, and we pass as arguments:
+        - `IMG_INIT_PNG`.
+        - `IMG_INIT_JPG`.
+    - Now I can use it to load texture.
+- **14:55:19**. In the previous lesson we create a simple windows. In this steps I gonna load and draw graphics.
+
 ### 04/01/2025
 
 - **10:55:33**. Implement main entry point.

@@ -1,0 +1,29 @@
+# Top-level .editorconfig file
+root = true
+
+# Configuración general para todos los archivos
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Configuración específica para archivos C y encabezados
+[*.c]
+indent_style = space
+indent_size = 4
+max_line_length = 80
+
+[*.h]
+indent_style = space
+indent_size = 4
+max_line_length = 80
+
+# Configuración para archivos Makefile
+[Makefile]
+indent_style = tab
+tab_width = 4
+
+# Ignorar configuraciones específicas para archivos binarios
+[*.bin]
+indent_style = unset
