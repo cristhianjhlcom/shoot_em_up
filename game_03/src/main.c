@@ -24,20 +24,25 @@ int main(int argc, char *argv[]) {
         do_input();
 
         if (app.up) {
-            player.y -= 4;
+            player.y -= 5;
         }
 
         if (app.down) {
-            player.y += 4;
+            player.y += 5;
         }
 
         if (app.left) {
-            player.x -= 4;
+            player.x -= 5;
         }
 
         if (app.right) {
-            player.x += 4;
+            player.x += 5;
         }
+
+        if (player.x < 0) player.x = 0;
+        if (player.y < 0) player.y = 0;
+        if (player.x > (SCREEN_WIDTH - PLAYER_WIDTH)) player.x = SCREEN_WIDTH - PLAYER_WIDTH;
+        if (player.y > (SCREEN_HEIGHT - PLAYER_HEIGHT)) player.y = SCREEN_HEIGHT - PLAYER_HEIGHT;
 
         blit(player.texture, player.x, player.y);
         present_scene();

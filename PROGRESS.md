@@ -4,6 +4,13 @@
 
 ### 05/01/2025
 
+- **22:49:20**. Update the player movement speed to `5`.
+- **22:46:21**. Add collision with edge of screen.
+    - Prevent the player graphic go off the screen.
+        - If `player.x` and `player.y` are on `(0, 0)` coords on screen, set player x and y equal to 0.
+        - If `player.x` and `player.y` are greatter than screen width or screen height minus the size of player, set the player x and y properties equal to size of screen minus size of player graphics.
+            - Size of screen is `1260x720`.
+            - Size of player is `151x101`.
 - **22:01:44**. Dealing with player movement.
     - Simple adds interation with and of app movement properties change from 0 to 1.
         - `app.up` updates `player.y -= 4`.
