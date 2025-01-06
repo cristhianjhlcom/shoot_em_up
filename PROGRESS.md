@@ -4,6 +4,28 @@
 
 ### 05/01/2025
 
+- **22:01:44**. Dealing with player movement.
+    - Simple adds interation with and of app movement properties change from 0 to 1.
+        - `app.up` updates `player.y -= 4`.
+        - `app.down` updates `player.y += 4`.
+        - `app.left` updates `player.x -= 4`.
+        - `app.right` updates `player.x += 4`.
+- **21:53:10**. Add press keys events.
+    - Add to function to handle when user press and release an arrow key.
+        - `do_key_down` when the user press the key arrow.
+            - Checks with ifs statement when any of four arrow keys is pressing.
+        - `do_key_up` when the user released the key arrow.
+            - Checks with ifs statement when any of four arrow keys is released.
+    - Pass the keyboad event that triggers those events.
+    - Ignore the repeated keyboard events with `event->repeat == 0`.
+        - Deal only with events where the key has been pushed down for the first time.
+    - Its almost the same on both functions.
+- **21:45:37**. Add `app_t` struct properties.
+    - `int up`.
+    - `int down`.
+    - `int left`.
+    - `int right`.
+    - This properties will track out movement request when we press any arrow keys.
 - **16:14:03**. Update windows size constant to 1260 width and 760 height.
 - **16:12:56**. Update graphic image to `src/graphics/rocket.png`.
 - **16:11:03**. Add `-lSDL2_image` linked on compile script.
