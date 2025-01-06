@@ -2,6 +2,41 @@
 
 ## Process
 
+### 06/01/2025
+
+- **09:06:46**. Add fire bullets.
+    - Declare a new bullet entity `entity_t bullet;` and set default values with `memset(&bullet, 0, sizeof(entity_t));`.
+    - Inside the game loop with handle the next interaction:
+        - If the player trying to fire and the bullet is out of screen.
+            ```c
+            if (app.fire && bullet.health == 0) {
+                bullet.x = player.x + 130;
+                bullet.y = player.y + 45;
+                bullet.dx = 16;
+                bullet.dy = 0;
+                bullet.health = 1;
+            }
+            ```
+        - Set the bullet `speed` increased by x and y delta value.
+            ```c
+            bullet.x += bullet.dx;
+            bullet.y += bullet.dy;
+            ```
+        - If the bullet go out the screen, kill the bullet by setting the health to 0 `bullet.health = 0;`.
+        - If the health of bullet is greater than 0 would mean that the bullet is running throuth the screen so it have to be rendered with `blit()` function.
+- **08:49:57**. Update `input` events.
+    - Add `LCTRL` key event to handle the fire.
+    - `event->keysym.scancode == SDL_SCANCODE_LCTRL` add the scancode to check the key.
+        - keydown update `app.fire = 1;` value.
+        - keyup update `app.fire = 0;` value.
+- **08:45:45**. Add new properties on `entity_t` struct.
+    - `dx`, `dy` and `health`.
+    - These three properties will handle the delta `x` and `y` of the entity.
+    - The health property checks is the entity is alive if the health of zero would mean the entity is dead and could be deleted.
+- **08:42:55**. Add `fire` property on `app_t` struct.
+    - This track when the fire key is pressing.
+    - The main idea is only let the player shoot when the bullet is out of screen or touch the edge.
+
 ### 05/01/2025
 
 - **22:49:20**. Update the player movement speed to `5`.
