@@ -4,6 +4,82 @@
 
 ### 06/01/2025
 
+- **19:29:12**. Upgrade delay system with `cap_frame_rate` function.
+    - Replace `SDL_Delay(16)`.
+    - Create kind of maths to attempt an accurate 60fps.
+- **19:21:25**. Update `main.c` game loop.
+    - Remove all the referece of `player` and `bullet` entities. Now we handle it on stage file.
+    - Now use the `init_stage()` to setup the main game.
+        - Call `app.delegate.logic()` and `app.delegate.draw()` every loop of the game loop.To perform the game logic and draw the scene.
+- **19:13:39**. Implement `draw_player` and `draw_bullet` functions.
+    - Basically render on the screen the player texture and list of bullets texture.
+- **19:06:10**. Implement `do_bullets` function.
+    - Create two `entity_t` pointers variables called `*b` and `*prev`.
+    - Loop through our linked list of bullets.
+    - Move each bullet by adding the `dx` and `dy` to the `x` and `y` respectively.
+    - If the bullets reaches the right-hand side of the screen, we delete the bullet.
+- **18:56:15**. Implement `fire_bullet` function.
+    - Create a bullet `entity_t` object.
+    - Add the entity to the linked list.
+    - Set bullet x and y coords to the same as player x and y coords.
+    - Set bullet dx property to `PLAYER_BULLET_SPEED` this make the bullet move faster.
+    - Set bullet health to 1.
+    - Set bullet texture from the `bullet_texture` that we define on the file scope.
+    - Change the bullet position a little more centrally of the player.
+        - This is done by using player height and bullets height divide by 2.
+    - Set `player->reload` to `8` this tell to the game that 8 frames (approx 0.133333 seconds) must pass before we can shoot another bullet.
+- **18:49:09**. Implement `do_player` function.
+    - Basically move the movement logic from `main.c` to `stage.c` file.
+    - Check inside of `app.keyboard` array of what keys are active.
+    - Decrease the `player->reload` in case that is greater than zero.
+        - Reload controls how fast the player can fire.
+- **15:31:58**. Implement `init_player` function.
+    - Memory allocated entity instances and save on player variable.
+    - Check is the memory allocation was successfully.
+    - Set player values with `memset()`.
+    - Asignate the `fighter_tail` next property to `player` variable.
+        - Set the current stage fighter tail equals to `player`.
+    - Set pointer `player` properties.
+        - `x` equals to `100`.
+        - `y` equals to `100`.
+        - `texture` equals to the texture load of `rocket.png`.
+    - Render the player texture on screent with `SDL_QueryTexture`.
+- **15:28:44**. Implement `init_stage` function.
+    - Sets up a number of things for playing the game. It assigns the delegate's logic and draw pointers to two static logic and draw functions of its own, and also prepares the fighter and bullet linked lists for use. It then calls the `init_player` function.
+    - Add `logic` and `draw` function to `delegate` property of `app` instances.
+    - Set stage global variables values with `memset()` function.
+    - Set stage figther and bullet tails equals to memory stage fighter and bullet heads.
+    - Call `init_player` function.
+    - Load `fire_bullets.png` graphics textures.
+- **15:26:40**. Add stage.c file.
+    - Its responsabile for handling the game logic.
+    - Initialice `player` and `bullet_texture` static pointer variables.
+        ```c
+        static entity_t *player;
+        static SDL_Texture *bullet_texture;
+        ```
+    - NOTE. `static` function means that this functions only works on the current file (scope).
+    - Initialice static function for this `stage.c` file.
+- **14:06:19**. Refactor player inputs.
+    - Change `do_key_down` and `do_key_up`.
+        - Reduce ifs conditionals to only check repeated events, event scancode is less then `MAX_KEYBOARD_KEYS`.
+            - If so, then add the scancode to our `app.keyboard array and set it to `1`.
+            - Otherwise, for `do_key_up` set the value to 0.
+- **13:41:59*. Add `stage_t` struct.
+    - Handle the fither and bullet entities.
+- **13:37:35**. Refactor `app_t` struct.
+    - Remove arrow keys properties.
+    - Add keyboard with `MAX_KEYBOARD_KEYS` that is 350 values.
+        - This represent array of 350 slots of int type.
+    - Add delete property of `delegate_t` type.
+- **13:34:16**. Add new properties to `Entity` struct.
+    - Update x, y, dx and dy to `float` type.
+    - Add reloat `int` property and `*next` pointer of `entity_t`.
+- **13:27:45**. Add `Delegate` struct.
+    - Make to dynamic function as `Delagate` properties.
+        - `void (*logic)(void)` a logic function that receives not args and return nothing.
+        - `void (*draw)(void)` a draw function that receives not args and return nothing.
+    - Use this functions to dynamic change the behavior of the game.
 - **09:06:46**. Add fire bullets.
     - Declare a new bullet entity `entity_t bullet;` and set default values with `memset(&bullet, 0, sizeof(entity_t));`.
     - Inside the game loop with handle the next interaction:
