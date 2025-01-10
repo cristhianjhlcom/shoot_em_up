@@ -84,23 +84,27 @@ static void do_player(void) {
 }
 
 static void fire_bullet(void) {
-    entity_t *bullet;
-    bullet = malloc(sizeof(entity_t));
-    if (bullet == NULL) {
-        printf("Memory allocation failed.\n");
-        exit(1);
+    for (int idx = 0; idx < 2; idx++) {
+        entity_t *bullet;
+        bullet = malloc(sizeof(entity_t));
+        if (bullet == NULL) {
+            printf("Memory allocation failed.\n");
+            exit(1);
+        }
+        memset(bullet, 0, sizeof(entity_t));
+        stage.bullet_tail->next = bullet;
+        stage.bullet_tail = bullet;
+        bullet->x = player->x + 20;
+        bullet->y = player->y + (idx == 0 ? -5 : 5);
+        bullet->dx = PLAYER_BULLET_SPEED;
+        //bullet->dy = (rand() % 5) - 2;
+        bullet->dy = ((float)(rand() % 100) / 50.0f) - 1.0f;
+        bullet->health = 1;
+        bullet->texture = bullet_texture;
+        SDL_QueryTexture(bullet->texture, NULL, NULL, &bullet->w, &bullet->h);
+        bullet->y += (player->h / 2) - (bullet->h / 2);
+        player->reload = 8;
     }
-    memset(bullet, 0, sizeof(entity_t));
-    stage.bullet_tail->next = bullet;
-    stage.bullet_tail = bullet;
-    bullet->x = player->x;
-    bullet->y = player->y;
-    bullet->dx = PLAYER_BULLET_SPEED;
-    bullet->health = 1;
-    bullet->texture = bullet_texture;
-    SDL_QueryTexture(bullet->texture, NULL, NULL, &bullet->w, &bullet->h);
-    bullet->y += (player->h / 2) - (bullet->h / 2);
-    player->reload = 8;
 }
 
 static void do_bullets(void) {
