@@ -4,6 +4,10 @@
 
 ### 10/01/2025
 
+- **16:08:59**. Add new features.
+    - Changes the spawn rates of the enemies.
+    - Make the enemies move on the `y` axis as well as the `x`.
+    - Provent enemy from leaving the top and bottom of the screen.
 - **15:29:58**. Fix `do_fighters` functions.
     - No render the fighters properly.
     - Inside the for loop missed to check:
