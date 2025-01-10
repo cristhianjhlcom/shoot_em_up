@@ -4,6 +4,36 @@
 
 ### 10/01/2025
 
+- **15:29:58**. Fix `do_fighters` functions.
+    - No render the fighters properly.
+    - Inside the for loop missed to check:
+        - If fighter entity is different to player and entity x property is lower than negative entity width.
+- **10:49:11**. Implement `draw_fighters` function.
+    - Replace the `draw_player` function for this one.
+    - Loop through linked list of players in stage and draw each one of them.
+    - Use `blit` command for this.
+- **10:33:57**. Add `spawn_enemies` function.
+    - Decrements `enemy_spawn_timer` once it falls below 1.
+    - The `enemy_t` object is added to the linked list of the stage object.
+    - Place it at the right-hand of the screen.
+        - The `y` coordinate is choosen randomly based on `SCREEN_HEIGHT`.
+    - Set the texture property of cached variables we placed before `enemy_texture`.
+    - Load the enemy texture with `SDL_QueryTexture`.
+    - Set enemy `dx` randomly between -2 and -5 causing them move from right to left at differents speeds.
+    - `enemy_spawn_timer` is reset to between 30 and 89 milliseconds.
+        - This create a enemy between 0.5 and 1.5 seconds.
+- **09:53:18**. Add two new functions on `init_stage`.
+    - `do_fighters` functions.
+        - Checks all the fighters on screen, include player.
+        - Step through all the fighters in the linked list of stage and add to each one's dx and dy to ther x and y respectively to move then.
+        - Check is the fighter in question is the player.
+             - If not and it reaches the left-hand side of the screen, we delete it.
+- **09:38:31**. Update `stage.c` to handle enemies.
+    - Add `enemy_texture` and `enemy_spawn_timer`.
+- **09:23:13**. Add .gitignore on proyect 006.
+- **09:20:47**. Update player and bullets sprite.
+    - Change the graphics.
+    - Change the background color.
 - **08:33:42**. Update spread shoots.
     - Change the formula of the random number to be more preciselly.
         ```c
