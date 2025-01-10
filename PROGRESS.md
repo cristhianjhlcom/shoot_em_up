@@ -2,6 +2,25 @@
 
 ## Process
 
+### 10/01/2025
+
+- **08:33:42**. Update spread shoots.
+    - Change the formula of the random number to be more preciselly.
+        ```c
+        bullet->dy = ((float)(rand() % 100) / 50.0f) - 1.0f;
+        ```
+- **08:20:03**. Add two shots at once.
+    - Update the `fire_bullet` function.
+        - Use a for loop to create two bullets instances.
+        - Adjust the `x` and `y` por each bullets.
+            - `-5` on y position when is the first bullet.
+            - `5` on y for the second bullet.
+    - Spread the bullets randomly.
+        - Adjust the `dy` property.
+        - Use the `rand()` function for the `stdlib` header.
+            - `rand() % 5` generate a random number between 0 and 4.
+            - Extract `2` on the generate number so we add value between -2 or 2 for each bullet.
+
 ### 06/01/2025
 
 - **19:29:12**. Upgrade delay system with `cap_frame_rate` function.
