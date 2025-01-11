@@ -4,6 +4,31 @@
 
 ### 10/01/2025
 
+- **20:55:50**. Update `bullet` y position.
+    - Check is the index of the bullet is even or odd.
+        - If its event, set `y` position on `-5`.
+        - If its odd,s et `y` position on `5`.
+- **20:40:17**. Allow the enemies to be shot more than once before they are destroyed.
+- **20:33:29**. Add `bullet_hit_fighter` function.
+    - Loop through linked list of fighters.
+        - Check is entity are on same `side`.
+        - Check is `collision` is `true` or `1` (is the same)
+        - If the condition es true return 1.
+        - Otherwise, return 0.
+- **19:41:30**. Update `do_fighters` function.
+    - Add `e->health == 0` condition so we delete the enemy when its health is equal to 0.
+    - Add `health` property as `1` to all entities.
+        - `player` entity.
+        - `enemy` entity.
+        - `bullet` entity.
+        - This prevent to remove any entity before render becuase of conditions.
+- **19:37:57**. Add `side` property on:
+    - `init_player` as `SIDE_PLAYER`.
+    - `spawn_enemies` as `SIDE_ALIEN`.
+    - `fire_bullet` as `SIDE_PLAYER`.
+- **19:37:33**. Add `MAX` and `MIN` function definitions.
+- **16:39:03*. Add constants values.
+    - `SIDE_PLAYER` and `SIDE_ALIENT` this will affect when firing bullets.
 - **16:08:59**. Add new features.
     - Changes the spawn rates of the enemies.
     - Make the enemies move on the `y` axis as well as the `x`.
