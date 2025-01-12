@@ -4,6 +4,9 @@
 
 ### 12/01/2025
 
+- **13:47:22**. Add new texture.
+    - `alien_bullet_texture` from `enemy_bullet.png`
+    - `player_texture` from `player.png`
 - **13:08:25**. Implement `calc_slope`.
     - Takes six arguments the x and y of sources coords, and x and y of destinations coords.
     - Two floats delta coords memory references.
