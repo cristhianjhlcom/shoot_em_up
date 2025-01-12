@@ -2,6 +2,18 @@
 
 ## Process
 
+### 12/01/2025
+
+- **13:08:25**. Implement `calc_slope`.
+    - Takes six arguments the x and y of sources coords, and x and y of destinations coords.
+    - Two floats delta coords memory references.
+    - This function calculates the step from one point to another.
+    - The `dx` and `dy` will be always `1` or `-1`.
+    - This will be used to tell the alien's bullets which way they need to go to reach their target when they are fired.
+- **13:00:20*. Add new constasts.
+    - `FSP`for timing calculation.
+    - `ALIEN_BULLET_SPEED`this controlles the speed of enemies bullets while the are moving.
+
 ### 10/01/2025
 
 - **20:55:50**. Update `bullet` y position.
