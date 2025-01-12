@@ -4,8 +4,22 @@
 
 ### 12/01/2025
 
+- **17:15:15**. Implement `do_enemies` function.
+    - Set `entity_t` instance.
+    - Loop through fighter linked list of stage until `e` is NULL.- Check the next conditions:
+        1. The entity if diferent to the player instance.
+        2. The player is not `NULL`.
+        3. Decrease entity reload until is less than 0.
+        4. Call `fire_alien_bullet` function.
+- **15:24:12**. Add validation on `do_player`.
+    - Now that player can be NULL, the program prevents that the logic inside function is executed.
+- **14:55:43**. Update `logic` function.
+    - Call `reset_stage` function when there is not player instances and `stage_reset_timer` is less than 0.
+        - The scenario when the player is NULL happens when any enemy bullet hit the player.
+        - We decrement the `stage_reset_timer` and when the value is 0 we reset the stage. This prevents that the game reset instantly.
 - **14:20:16**. Implement `reset_stage` function.
     1. Clean fighters and bullets linked list from memory.
+        - Delete any existing fighters or bullets.
     2. Set default `stage_t` struct values with `memset`.
     3. Set circular linked list for fighter and bullets.
     4. Move `init_player` from `init_stage` inside this function.
