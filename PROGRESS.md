@@ -4,9 +4,18 @@
 
 ### 12/01/2025
 
+- **14:20:16**. Implement `reset_stage` function.
+    1. Clean fighters and bullets linked list from memory.
+    2. Set default `stage_t` struct values with `memset`.
+    3. Set circular linked list for fighter and bullets.
+    4. Move `init_player` from `init_stage` inside this function.
+    5. Move `enemy_spawn_timer` and `stage_reset_timer` inside this function.
+        - Reset timer default values.
 - **13:47:22**. Add new texture.
     - `alien_bullet_texture` from `enemy_bullet.png`
     - `player_texture` from `player.png`
+    - Use a different bullet texture for the enemy bullets.
+    - Now load the player texture and cached it on its own variable, so the app dont wasted time and resource loading the image every time.
 - **13:08:25**. Implement `calc_slope`.
     - Takes six arguments the x and y of sources coords, and x and y of destinations coords.
     - Two floats delta coords memory references.
