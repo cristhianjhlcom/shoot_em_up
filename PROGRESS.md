@@ -4,6 +4,16 @@
 
 ### 12/01/2025
 
+- **18:57:21**. Implement `fire_alien_bullet` function.
+    - Is similar to the `fire_bullet` of the player instance.
+    - Create a entity bullet instances.
+    - Dynamic allocated the bullet entity on memory.
+    - Set the defaul values for all properties of entity bullet.- Point the current node bullet to the last position of the linked list.
+    - Set bullet position on the center on the fighter.
+        - Set the cached texture of the enemy bullet.
+    - Set the side of the bullet as `SIDE_ALIEN`.
+        - Make the bullet only hits the player entity, and pass through the same enemies entities.
+    - Calculate the direction the bullet will need to travel in order to hit the player calling the `calc_slope` function.
 - **17:15:15**. Implement `do_enemies` function.
     - Set `entity_t` instance.
     - Loop through fighter linked list of stage until `e` is NULL.- Check the next conditions:
