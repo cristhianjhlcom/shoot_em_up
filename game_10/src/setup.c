@@ -1,4 +1,5 @@
 #include "common.h"
+#include <SDL2/SDL.h>
 
 #include "setup.h"
 
@@ -8,7 +9,7 @@ void init(void) {
     const int renderer_flags = SDL_RENDERER_ACCELERATED;
     const int window_flags = 0;
 
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+    if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         printf("SDL2 is not installed %s\n", SDL_GetError());
         exit(1);
     }
