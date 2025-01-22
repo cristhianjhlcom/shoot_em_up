@@ -1,4 +1,4 @@
-#include "common.h"
+#include "../include/common.h"
 
 extern app_t app;
 

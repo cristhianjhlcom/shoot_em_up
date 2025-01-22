@@ -1,16 +1,16 @@
-#include "common.h"
+#include "../include/common.h"
 
-#include "setup.h"
-#include "input.h"
-#include "draw.h"
-#include "stage.h"
+#include "../include/setup.h"
+#include "../include/input.h"
+#include "../include/draw.h"
+#include "../include/stage.h"
 
 app_t app;
 stage_t stage;
 
 static void cap_frame_rate(long *then, float *remainder);
 
-int main(int argc, char *argv[]) {
+int main() {
     long then;
     float remainder;
 

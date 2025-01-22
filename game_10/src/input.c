@@ -1,5 +1,4 @@
-#include "common.h"
-#include <SDL2/SDL_scancode.h>
+#include "../include/common.h"
 
 void do_key_down(SDL_KeyboardEvent *event);
 void do_key_up(SDL_KeyboardEvent *event);

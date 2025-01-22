@@ -1,7 +1,6 @@
-#include "common.h"
-#include <SDL2/SDL.h>
+#include "../include/common.h"
 
-#include "setup.h"
+#include "../include/setup.h"
 
 extern app_t app;
 

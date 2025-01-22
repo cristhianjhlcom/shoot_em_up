@@ -39,24 +39,17 @@ typedef struct App {
 } app_t;
 
 typedef struct Entity {
-    float x;
-    float y;
-    int w;
-    int h;
-    float dy;
-    float dx;
-    int health;
-    int reload;
-    int side;
+    float x, y;
+    int w, h;
+    float dx, dy;
+    int health, reload, side;
     SDL_Texture *texture;
     entity_t *next;
 } entity_t;
 
 typedef struct Stage {
-    entity_t fighter_head;
-    entity_t *fighter_tail;
-    entity_t bullet_head;
-    entity_t *bullet_tail;
+    entity_t fighter_head, *fighter_tail;
+    entity_t bullet_head, *bullet_tail;
     explosion_t explosion_head, *explosion_tail;
     debris_t debris_head, *debris_tail;
 } stage_t;

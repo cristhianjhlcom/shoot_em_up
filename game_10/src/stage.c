@@ -1,11 +1,9 @@
-#include "common.h"
+#include "../include/common.h"
 
-#include "stage.h"
-#include "draw.h"
-#include "structs.h"
-#include "util.h"
-#include <SDL2/SDL_blendmode.h>
-#include <SDL2/SDL_render.h>
+#include "../include/stage.h"
+#include "../include/draw.h"
+#include "../include/structs.h"
+#include "../include/util.h"
 
 extern app_t app;
 extern stage_t stage;
@@ -26,7 +24,6 @@ static void add_explosion(int x, int y, int num);
 static void add_debris(entity_t *e);
 static void fire_bullet(void);
 static void fire_alien_bullet(entity_t *e);
-static void draw_player(void);
 static void draw_bullet(void);
 static void draw_fighters(void);
 static void draw_background();
@@ -93,7 +90,7 @@ static void reset_stage(void) {
     // Clean explosion linked list.
     while (stage.explosion_head.next) {
         ex = stage.explosion_head.next;
-        stage.bullet_head.next = e->next;
+        stage.explosion_head.next = ex->next;
         free(e);
     }
 
@@ -481,10 +478,6 @@ static void draw(void) {
     draw_explosion();
 }
 
-
-static void draw_player(void) {
-    blit(player->texture, player->x, player->y);
-}
 
 static void draw_bullet(void) {
     entity_t *b;
