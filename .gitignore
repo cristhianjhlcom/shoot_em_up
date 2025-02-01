@@ -1,0 +1,16 @@
+shooter_01/build/*
+shooter_02/build/*
+shooter_03/build/*
+shooter_04/build/*
+shooter_05/build/*
+shooter_06/build/*
+shooter_01/src/*.o
+shooter_02/src/*.o
+shooter_03/src/*.o
+shooter_04/src/*.o
+shooter_05/src/*.o
+shooter_06/src/*.o
+shooter_07/src/*.o
+shooter_09/src/*.o
+shooter_08/src/*.o
+
