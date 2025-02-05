@@ -8,7 +8,7 @@ extern app_t app;
 void do_input(void) {
     SDL_Event event;
 
-    while(SDL_PollEvent(&event)) {
+    while (SDL_PollEvent(&event)) {
         switch (event.type) {
             case SDL_QUIT:
                 SDL_Quit();

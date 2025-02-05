@@ -1,10 +1,5 @@
 #include "common.h"
 
-#include "stage.h"
-#include "draw.h"
-#include "structs.h"
-#include "util.h"
-
 extern app_t app;
 extern stage_t stage;
 
@@ -58,12 +53,16 @@ void init_stage(void) {
     stage.explosion_tail = &stage.explosion_head;
     stage.debris_tail = &stage.debris_head;
 
-    bullet_texture = load_texture("src/graphics/player_bullet.png");
-    alien_bullet_texture = load_texture("src/graphics/enemy_bullet.png");
-    player_texture = load_texture("src/graphics/player.png");
-    enemy_texture = load_texture("src/graphics/enemy.png");
-    background = load_texture("src/graphics/background.png");
-    explosion_texture = load_texture("src/graphics/explosion.png");
+    bullet_texture = load_texture("assets/graphics/player_bullet.png");
+    alien_bullet_texture = load_texture("assets/graphics/enemy_bullet.png");
+    player_texture = load_texture("assets/graphics/player.png");
+    enemy_texture = load_texture("assets/graphics/enemy.png");
+    background = load_texture("assets/graphics/background.png");
+    explosion_texture = load_texture("assets/graphics/explosion.png");
+
+    load_music("assets/music/Mercury.ogg");
+
+    play_music(1);
 
     reset_stage();
 }
@@ -129,7 +128,7 @@ static void init_starfield(void) {
     }
 }
 
-static void init_player(void)  {
+static void init_player(void) {
     player = malloc(sizeof(entity_t));
     if (player == NULL) {
         printf("Memory allocation failed.\n");
@@ -140,10 +139,10 @@ static void init_player(void)  {
     stage.fighter_tail = player;
     player->x = 100;
     player->y = 100;
-    player->texture = load_texture("src/graphics/player.png");
+    player->texture = load_texture("assets/graphics/player.png");
     SDL_QueryTexture(player->texture, NULL, NULL, &player->w, &player->h);
     player->health = 1;
-	player->side = SIDE_PLAYER;
+    player->side = SIDE_PLAYER;
 }
 
 static void logic(void) {
@@ -212,6 +211,7 @@ static void do_player(void) {
         }
 
         if (app.keyboard[SDL_SCANCODE_LCTRL] && player->reload == 0) {
+            play_sound(SND_PLAYER_FIRE, CH_PLAYER);
             fire_bullet();
         }
     }
@@ -292,8 +292,8 @@ static void do_enemies(void) {
         // Decrease entity reload until is less than 0.
         // Then call fire_alien_bullet().
         if (e != player && player != NULL && --e->reload <= 0) {
-            printf("Firing alien bullets...\n");
             fire_alien_bullet(e);
+            play_sound(SND_ALIEN_FIRE, CH_ALIEN_FIRE);
         }
     }
 }
@@ -313,7 +313,7 @@ static void fire_bullet(void) {
         bullet->y = player->y + (idx % 2 == 0 ? -5 : 5);
         bullet->dx = PLAYER_BULLET_SPEED;
         // Controls the spread of each bullets.
-        //bullet->dy = (rand() % 5) - 2;
+        // bullet->dy = (rand() % 5) - 2;
         bullet->dy = ((float)(rand() % 100) / 50.0f) - 1.0f;
         bullet->health = 1;
         bullet->texture = bullet_texture;
@@ -453,8 +453,7 @@ static void do_bullets(void) {
             b->x < -b->w ||
             b->y < -b->h ||
             b->x > SCREEN_WIDTH ||
-            b->y > SCREEN_HEIGHT
-        ) {
+            b->y > SCREEN_HEIGHT) {
             if (b == stage.bullet_tail) {
                 stage.bullet_tail = prev;
             }
@@ -468,7 +467,6 @@ static void do_bullets(void) {
     }
 }
 
-
 static void draw(void) {
     draw_background();
     draw_starfield();
@@ -477,7 +475,6 @@ static void draw(void) {
     draw_debris();
     draw_explosion();
 }
-
 
 static void draw_bullet(void) {
     entity_t *b;
@@ -631,6 +628,12 @@ static int bullet_hit_fighter(entity_t *b) {
             /*    add_explosion(e->x, e->y, 32);*/
             /*    add_debris(e);*/
             /*}*/
+            if (e == player) {
+                play_sound(SND_PLAYER_DIE, CH_PLAYER);
+            } else {
+                play_sound(SND_ALIEN_DIE, CH_ANY);
+            }
+
             add_explosion(e->x, e->y, 32);
             add_debris(e);
 

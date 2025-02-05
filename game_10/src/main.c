@@ -1,10 +1,5 @@
 #include "common.h"
 
-#include "setup.h"
-#include "input.h"
-#include "draw.h"
-#include "stage.h"
-
 app_t app;
 stage_t stage;
 
@@ -22,11 +17,13 @@ int main(int argc, char *argv[]) {
 
     init_stage();
 
+    init_sounds();
+
     then = SDL_GetTicks();
 
     remainder = 0;
 
-    while(1) {
+    while (1) {
         prepare_scene();
 
         do_input();

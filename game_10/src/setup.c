@@ -1,7 +1,5 @@
 #include "common.h"
 
-#include "setup.h"
-
 extern app_t app;
 
 void init(void) {
@@ -19,15 +17,13 @@ void init(void) {
         SDL_WINDOWPOS_UNDEFINED,
         SCREEN_WIDTH,
         SCREEN_HEIGHT,
-        window_flags
-    );
+        window_flags);
     if (app.window == NULL) {
         printf(
             "Failed to open %d x %d window %s\n",
             SCREEN_WIDTH,
             SCREEN_HEIGHT,
-            SDL_GetError()
-        );
+            SDL_GetError());
         exit(1);
     }
 
@@ -36,8 +32,7 @@ void init(void) {
     app.renderer = SDL_CreateRenderer(
         app.window,
         -1,
-        renderer_flags
-    );
+        renderer_flags);
     if (app.renderer == NULL) {
         printf("Failed to create renderer %s\n", SDL_GetError());
         exit(1);
