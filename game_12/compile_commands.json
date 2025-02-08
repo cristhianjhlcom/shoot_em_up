@@ -1,0 +1,50 @@
+[
+{
+  "directory": "D:/code/c/games/shoot_em_up/game_12",
+  "command": "D:\\mingw64\\bin\\gcc.exe -ID:/code/c/games/shoot_em_up/game_12/include -ID:/SDL2-2.30.11/include/SDL2  -g -DDEBUG -Wall -Werror -Wpedantic -g -std=gnu2x -Wall -Werror -Wpedantic -o CMakeFiles\\output.dir\\src\\draw.c.obj -c D:\\code\\c\\games\\shoot_em_up\\game_12\\src\\draw.c",
+  "file": "D:\\code\\c\\games\\shoot_em_up\\game_12\\src\\draw.c",
+  "output": "CMakeFiles\\output.dir\\src\\draw.c.obj"
+},
+{
+  "directory": "D:/code/c/games/shoot_em_up/game_12",
+  "command": "D:\\mingw64\\bin\\gcc.exe -ID:/code/c/games/shoot_em_up/game_12/include -ID:/SDL2-2.30.11/include/SDL2  -g -DDEBUG -Wall -Werror -Wpedantic -g -std=gnu2x -Wall -Werror -Wpedantic -o CMakeFiles\\output.dir\\src\\input.c.obj -c D:\\code\\c\\games\\shoot_em_up\\game_12\\src\\input.c",
+  "file": "D:\\code\\c\\games\\shoot_em_up\\game_12\\src\\input.c",
+  "output": "CMakeFiles\\output.dir\\src\\input.c.obj"
+},
+{
+  "directory": "D:/code/c/games/shoot_em_up/game_12",
+  "command": "D:\\mingw64\\bin\\gcc.exe -ID:/code/c/games/shoot_em_up/game_12/include -ID:/SDL2-2.30.11/include/SDL2  -g -DDEBUG -Wall -Werror -Wpedantic -g -std=gnu2x -Wall -Werror -Wpedantic -o CMakeFiles\\output.dir\\src\\main.c.obj -c D:\\code\\c\\games\\shoot_em_up\\game_12\\src\\main.c",
+  "file": "D:\\code\\c\\games\\shoot_em_up\\game_12\\src\\main.c",
+  "output": "CMakeFiles\\output.dir\\src\\main.c.obj"
+},
+{
+  "directory": "D:/code/c/games/shoot_em_up/game_12",
+  "command": "D:\\mingw64\\bin\\gcc.exe -ID:/code/c/games/shoot_em_up/game_12/include -ID:/SDL2-2.30.11/include/SDL2  -g -DDEBUG -Wall -Werror -Wpedantic -g -std=gnu2x -Wall -Werror -Wpedantic -o CMakeFiles\\output.dir\\src\\music.c.obj -c D:\\code\\c\\games\\shoot_em_up\\game_12\\src\\music.c",
+  "file": "D:\\code\\c\\games\\shoot_em_up\\game_12\\src\\music.c",
+  "output": "CMakeFiles\\output.dir\\src\\music.c.obj"
+},
+{
+  "directory": "D:/code/c/games/shoot_em_up/game_12",
+  "command": "D:\\mingw64\\bin\\gcc.exe -ID:/code/c/games/shoot_em_up/game_12/include -ID:/SDL2-2.30.11/include/SDL2  -g -DDEBUG -Wall -Werror -Wpedantic -g -std=gnu2x -Wall -Werror -Wpedantic -o CMakeFiles\\output.dir\\src\\setup.c.obj -c D:\\code\\c\\games\\shoot_em_up\\game_12\\src\\setup.c",
+  "file": "D:\\code\\c\\games\\shoot_em_up\\game_12\\src\\setup.c",
+  "output": "CMakeFiles\\output.dir\\src\\setup.c.obj"
+},
+{
+  "directory": "D:/code/c/games/shoot_em_up/game_12",
+  "command": "D:\\mingw64\\bin\\gcc.exe -ID:/code/c/games/shoot_em_up/game_12/include -ID:/SDL2-2.30.11/include/SDL2  -g -DDEBUG -Wall -Werror -Wpedantic -g -std=gnu2x -Wall -Werror -Wpedantic -o CMakeFiles\\output.dir\\src\\stage.c.obj -c D:\\code\\c\\games\\shoot_em_up\\game_12\\src\\stage.c",
+  "file": "D:\\code\\c\\games\\shoot_em_up\\game_12\\src\\stage.c",
+  "output": "CMakeFiles\\output.dir\\src\\stage.c.obj"
+},
+{
+  "directory": "D:/code/c/games/shoot_em_up/game_12",
+  "command": "D:\\mingw64\\bin\\gcc.exe -ID:/code/c/games/shoot_em_up/game_12/include -ID:/SDL2-2.30.11/include/SDL2  -g -DDEBUG -Wall -Werror -Wpedantic -g -std=gnu2x -Wall -Werror -Wpedantic -o CMakeFiles\\output.dir\\src\\text.c.obj -c D:\\code\\c\\games\\shoot_em_up\\game_12\\src\\text.c",
+  "file": "D:\\code\\c\\games\\shoot_em_up\\game_12\\src\\text.c",
+  "output": "CMakeFiles\\output.dir\\src\\text.c.obj"
+},
+{
+  "directory": "D:/code/c/games/shoot_em_up/game_12",
+  "command": "D:\\mingw64\\bin\\gcc.exe -ID:/code/c/games/shoot_em_up/game_12/include -ID:/SDL2-2.30.11/include/SDL2  -g -DDEBUG -Wall -Werror -Wpedantic -g -std=gnu2x -Wall -Werror -Wpedantic -o CMakeFiles\\output.dir\\src\\util.c.obj -c D:\\code\\c\\games\\shoot_em_up\\game_12\\src\\util.c",
+  "file": "D:\\code\\c\\games\\shoot_em_up\\game_12\\src\\util.c",
+  "output": "CMakeFiles\\output.dir\\src\\util.c.obj"
+}
+]
