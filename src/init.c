@@ -33,6 +33,12 @@ bool init(void)
         return false;
     }
 
+    int image_flags = IMG_INIT_PNG | IMG_INIT_JPG;
+    if (!(IMG_Init(image_flags) & image_flags))
+    {
+        SDL_Log("SDL image initialization failed %s\n", IMG_GetError());
+    }
+
     return true;
 }
 
