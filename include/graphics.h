@@ -6,7 +6,7 @@
 
 void prepare_scene(void);
 SDL_Texture *load_texture(const char *filename);
-void blit(SDL_Texture *texture, int x, int y);
+void blit(entity_t *entity);
 void present_scene(void);
 
 #endif  // GRAPHICS_H

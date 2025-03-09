@@ -24,16 +24,17 @@ SDL_Texture *load_texture(const char *filename)
     return texture;
 }
 
-void blit(SDL_Texture *texture, int x, int y)
+void blit(entity_t *entity)
 {
-    SDL_Rect dest = (SDL_Rect){
-        .x = x,
-        .y = y,
-    };
-    if (SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h) < 0)
+    if (SDL_QueryTexture(entity->texture, NULL, NULL, &entity->w, &entity->h) < 0)
     {
         SDL_Log("Error getting texture sizes %s\n", SDL_GetError());
         return;
     }
-    SDL_RenderCopy(app.renderer, texture, NULL, &dest);
+    SDL_Rect dest;
+    dest.x = entity->pos.x;
+    dest.y = entity->pos.y;
+    dest.w = entity->w;
+    dest.h = entity->h;
+    SDL_RenderCopy(app.renderer, entity->texture, NULL, &dest);
 }

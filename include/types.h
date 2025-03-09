@@ -9,6 +9,8 @@ typedef struct
     {
         int x, y;
     } pos;
+    int w, h;
+    int speed;
     SDL_Texture *texture;
 } entity_t;
 
