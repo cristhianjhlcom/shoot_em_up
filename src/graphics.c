@@ -1,3 +1,5 @@
+#include "graphics.h"
+
 void prepare_scene(void)
 {
     SDL_SetRenderDrawColor(app.renderer, 96, 128, 255, 255);

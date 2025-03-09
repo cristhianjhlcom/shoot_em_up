@@ -1,3 +1,5 @@
+#include "input.h"
+
 void inputs(void)
 {
     while (SDL_PollEvent(&app.event))

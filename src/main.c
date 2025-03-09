@@ -1,41 +1,27 @@
-// Standars includes.
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include "common.h"
+#include "core.h"
+#include "game_state.h"
+#include "graphics.h"
+#include "input.h"
 
-// SDL2 includes.
-#include "SDL.h"
-#include "SDL_events.h"
-#include "SDL_timer.h"
-#include "SDL_image.h"
-
-// Application includes.
-#include "constants.c"
-#include "init.c"
-#include "draw.c"
-#include "input.c"
-#include "entity.c"
-
-int main(int argv, char *argc[])
+int main(int argc, char *argv[])
 {
     memset(&app, 0, sizeof(app_t));
-    memset(&player, 0, sizeof(entity_t));
+    memset(&game_state, 0, sizeof(game_state_t));
 
     app.is_running = init();
 
-    player = (entity_t){
-        .pos.x = 200,
-        .pos.y = 200,
-        .texture = load_texture("assets/graphics/player.png"),
-    };
-
     atexit(cleanup);
+
+    game_state.player.pos.x = 200;
+    game_state.player.pos.y = 200;
+    game_state.player.texture = load_texture("assets/graphics/player.png");
 
     while (app.is_running)
     {
         prepare_scene();
         inputs();
-        blit(player.texture, player.pos.x, player.pos.y);
+        blit(game_state.player.texture, game_state.player.pos.x, game_state.player.pos.y);
         present_scene();
         SDL_Delay(16);
     }

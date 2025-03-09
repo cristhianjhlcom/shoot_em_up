@@ -1,12 +1,4 @@
-typedef struct
-{
-    SDL_Renderer *renderer;
-    SDL_Window *window;
-    bool is_running;
-    SDL_Event event;
-} app_t;
-
-app_t app;
+#include "core.h"
 
 bool init(void)
 {
