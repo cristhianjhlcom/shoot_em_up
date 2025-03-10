@@ -15,6 +15,7 @@ typedef struct
 typedef struct
 {
     entity_t player;
+    entity_t bullet;
     int up, down, left, right;
 } game_state_t;
 

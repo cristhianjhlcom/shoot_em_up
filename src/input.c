@@ -4,6 +4,11 @@ static void do_key_down(SDL_KeyboardEvent *event)
 {
     if (event->repeat == 0)
     {
+        if (event->keysym.scancode == SDL_SCANCODE_LCTRL)
+        {
+            game_state.player.fire = 1;
+        }
+
         if (event->keysym.scancode == SDL_SCANCODE_UP)
         {
             game_state.up = 1;
@@ -28,6 +33,11 @@ static void do_key_down(SDL_KeyboardEvent *event)
 
 static void do_key_up(SDL_KeyboardEvent *event)
 {
+    if (event->keysym.scancode == SDL_SCANCODE_LCTRL)
+    {
+        game_state.player.fire = 0;
+    }
+    
     if (event->repeat == 0)
     {
         if (event->keysym.scancode == SDL_SCANCODE_UP)
