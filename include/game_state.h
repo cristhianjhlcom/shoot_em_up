@@ -6,17 +6,27 @@
 
 typedef struct
 {
+    void (*logic)(void);
+    void (*draw)(void);
+} delegate_t;
+
+typedef struct
+{
     SDL_Renderer *renderer;
     SDL_Window *window;
     bool is_running;
-    SDL_Event event;
 } app_t;
 
 typedef struct
 {
     entity_t player;
-    entity_t bullet;
-    int up, down, left, right;
+    SDL_Event event;
+    delegate_t delegate;
+    int keyboard[MAX_KEYBOARD_KEYS];
+    struct {
+        entity_t fighter_head, *fighter_tail;
+        entity_t bullet_head, *bullet_tail;
+    } stage;
 } game_state_t;
 
 extern app_t app;
