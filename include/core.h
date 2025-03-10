@@ -6,5 +6,6 @@
 
 bool init(void);
 void cleanup(void);
+void cap_frame_rate(long *then, float *remainder);
 
 #endif  // CORE_H

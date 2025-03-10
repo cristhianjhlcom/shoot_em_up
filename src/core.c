@@ -42,3 +42,20 @@ void cleanup(void)
     app.window = NULL;
     SDL_Quit();
 }
+
+void cap_frame_rate(long *then, float *remainder)
+{
+   long wait, frame_time; 
+   wait = (long) (16 + *remainder);
+   *remainder -= (int) *remainder;
+   frame_time = (long) SDL_GetTicks() - *then;
+   wait -= frame_time;
+   if (wait < 1)
+   {
+        wait = 1;
+   }
+   // SDL_Log("FPS: %ld", wait);
+   SDL_Delay((Uint32) wait);
+   *remainder += (float) 0.667;
+   *then = (long) SDL_GetTicks();
+}
