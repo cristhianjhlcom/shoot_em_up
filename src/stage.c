@@ -1,6 +1,8 @@
 #include "stage.h"
 
 static SDL_Texture *bullet_texture;
+static SDL_Texture *enemy_texture;
+static int enemy_spawn_timer;
 
 static void fire_bullet(void)
 {
@@ -15,8 +17,6 @@ static void fire_bullet(void)
 	NOTE: Es lo mismo que calloc, limpia los valores basuras.
 	memset(bullet, 0, sizeof(entity_t));
 	*/
-	game_state.stage.bullet_tail->next = bullet;
-	game_state.stage.bullet_tail = bullet;
 	/*
 	*bullet = (entity_t) {
 		.pos.x = (float) game_state.player.pos.x + (float) ((game_state.player.w + 50) / 2),
@@ -33,7 +33,13 @@ static void fire_bullet(void)
 	bullet->health = 1;
 	bullet->texture = bullet_texture;
 	bullet->delta.x += PLAYER_BULLET_SPEED;
-	SDL_QueryTexture(bullet->texture, NULL, NULL, &bullet->w, &bullet->h);
+	if (SDL_QueryTexture(bullet->texture, NULL, NULL, &bullet->w, &bullet->h) < 0)
+	{
+        SDL_Log("fire_bullet:36 %s\n", SDL_GetError());
+        return;
+	}
+	game_state.stage.bullet_tail->next = bullet;
+	game_state.stage.bullet_tail = bullet;
 	game_state.player.reload = 8;
 }
 
@@ -88,8 +94,33 @@ static void do_player(void)
 	{
 		fire_bullet();
 	}
+	/*
 	game_state.player.pos.x += game_state.player.delta.x;
 	game_state.player.pos.y += game_state.player.delta.y;
+	*/
+}
+
+static void do_fighters(void)
+{
+	entity_t *e, *prev;
+	prev = &game_state.stage.fighter_head;
+	for (e = game_state.stage.fighter_head.next; e != NULL; e = e->next)
+	{
+		e->pos.x += e->delta.x;
+		e->pos.y += e->delta.y;
+
+		if (e != &game_state.player && e->pos.x < -e->w)
+		{
+			if (e == game_state.stage.fighter_tail)
+			{
+				game_state.stage.fighter_tail = prev;
+			}
+			prev->next = e->next;
+			free(e);
+			e = prev;
+		}
+		prev = e;
+	}
 }
 
 static void draw_player(void)
@@ -109,16 +140,55 @@ static void draw_bullets(void)
 	}
 }
 
+static void draw_fighters(void)
+{
+	entity_t *e;
+	for (e = game_state.stage.fighter_head.next; e != NULL; e = e->next)
+	{
+		blit(e);
+	}
+}
+
 static void draw(void)
 {
 	draw_player();
 	draw_bullets();
+	draw_fighters();
+}
+
+static void spawn_enemies(void)
+{
+	entity_t *enemy;
+	if (--enemy_spawn_timer <= 0)
+	{
+		enemy = malloc(sizeof(entity_t));
+		if (enemy == NULL)
+		{
+			printf("Memory Allocation Failed.\n");
+			exit(1);
+		}
+		memset(enemy, 0, sizeof(entity_t));
+		game_state.stage.fighter_tail->next = enemy;
+		game_state.stage.fighter_tail = enemy;
+		enemy->pos.x = SCREEN_WIDTH;
+		enemy->pos.y = (float) (rand() % SCREEN_HEIGHT);
+		enemy->texture = enemy_texture;
+		if (SDL_QueryTexture(enemy->texture, NULL, NULL, &enemy->w, &enemy->h) < 0)
+		{
+			printf("Cannont assign enemy w and h to entity\n.");
+			exit(1);
+		}
+		enemy->delta.x = (float) -(2 + (rand() % 4));
+		enemy_spawn_timer = 30 + (rand() & 60);
+	}
 }
 
 static void logic(void)
 {
 	do_player();
+	do_fighters();
 	do_bullets();
+	spawn_enemies();
 }
 
 static void init_player(void)
@@ -131,7 +201,7 @@ static void init_player(void)
     game_state.player.speed = PLAYER_SPEED;
     if (SDL_QueryTexture(game_state.player.texture, NULL, NULL, &game_state.player.w, &game_state.player.h) < 0)
     {
-        SDL_Log("[init_player]: %s\n", SDL_GetError());
+        SDL_Log("init_player:138 %s\n", SDL_GetError());
         return;
     }
 }
@@ -144,5 +214,7 @@ void init_stage(void)
 	game_state.stage.bullet_tail = &game_state.stage.bullet_head;
 	init_player();
     bullet_texture = load_texture("assets/graphics/bullet.png");
+    enemy_texture = load_texture("assets/graphics/enemy.png");
+    enemy_spawn_timer = 0;
     // game_state.bullet.speed = PLAYER_BULLET_SPEED;
 }
