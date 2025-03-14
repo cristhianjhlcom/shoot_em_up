@@ -33,6 +33,7 @@ static void fire_bullet(void)
 	bullet->health = 1;
 	bullet->texture = bullet_texture;
 	bullet->delta.x += PLAYER_BULLET_SPEED;
+	bullet->side = SIDE_PLAYER;
 	if (SDL_QueryTexture(bullet->texture, NULL, NULL, &bullet->w, &bullet->h) < 0)
 	{
         SDL_Log("fire_bullet:36 %s\n", SDL_GetError());
@@ -41,6 +42,31 @@ static void fire_bullet(void)
 	game_state.stage.bullet_tail->next = bullet;
 	game_state.stage.bullet_tail = bullet;
 	game_state.player.reload = 8;
+}
+
+static int bullet_hit_fighter(entity_t *b)
+{
+	entity_t *e;
+	for (e = game_state.stage.fighter_head.next; e != NULL; e = e->next)
+	{
+		if (e->side != b->side && collision(
+			(int) b->pos.x,
+			(int) b->pos.y,
+			b->w,
+			b->h,
+			(int) e->pos.x,
+			(int) e->pos.y,
+			e->w,
+			e->h
+		))
+		{
+			b->health = 0;
+			e->health = 0;
+
+			return 1;
+		}
+	}
+	return 0;
 }
 
 static void do_bullets(void)
@@ -52,7 +78,7 @@ static void do_bullets(void)
 		b->pos.x += b->delta.x;
 		b->pos.y += b->delta.y;
 
-		if (b->pos.x > SCREEN_WIDTH)
+		if (bullet_hit_fighter(b) || b->pos.x > SCREEN_WIDTH)
 		{
 			if (b == game_state.stage.bullet_tail)
 			{
@@ -109,7 +135,7 @@ static void do_fighters(void)
 		e->pos.x += e->delta.x;
 		e->pos.y += e->delta.y;
 
-		if (e != &game_state.player && e->pos.x < -e->w)
+		if (e != &game_state.player && (e->pos.x < -e->w || e->health == 0))
 		{
 			if (e == game_state.stage.fighter_tail)
 			{
@@ -179,6 +205,8 @@ static void spawn_enemies(void)
 			exit(1);
 		}
 		enemy->delta.x = (float) -(2 + (rand() % 4));
+		enemy->side = SIDE_ALIEN;
+		enemy->health = 1;
 		enemy_spawn_timer = 30 + (rand() & 60);
 	}
 }
@@ -204,6 +232,7 @@ static void init_player(void)
         SDL_Log("init_player:138 %s\n", SDL_GetError());
         return;
     }
+    game_state.player.side = SIDE_PLAYER;
 }
 
 void init_stage(void)

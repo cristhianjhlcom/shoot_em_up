@@ -5,6 +5,7 @@
 #include "graphics.h"
 #include "types.h"
 #include "game_state.h"
+#include "util.h"
 
 void init_stage(void);
 

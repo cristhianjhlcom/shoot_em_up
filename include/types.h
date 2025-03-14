@@ -20,6 +20,7 @@ struct entity_t
     int reload;
     int speed;
     int fire;
+    int side;
     SDL_Texture *texture;
     entity_t *next;
 };
