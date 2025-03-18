@@ -31,6 +31,8 @@ bool init(void)
         SDL_Log("SDL image initialization failed %s\n", IMG_GetError());
     }
 
+    SDL_ShowCursor(0);
+
     return true;
 }
 

@@ -2,7 +2,9 @@
 #define UTIL_H
 
 #include "common.h"
+#include "types.h"
 
-int collision(int x1, int y1, int w1, int h1, int x2, int y2, int w2, int h2);
+int collision(entity_t *source, entity_t *target);
+void calc_slope(entity_t *player, entity_t *enemy, entity_t *bullet);
 
 #endif // UTIL_H

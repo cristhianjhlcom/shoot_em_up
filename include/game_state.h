@@ -19,13 +19,15 @@ typedef struct
 
 typedef struct
 {
-    entity_t player;
+    entity_t *player;
     SDL_Event event;
     delegate_t delegate;
     int keyboard[MAX_KEYBOARD_KEYS];
     struct {
         entity_t fighter_head, *fighter_tail;
         entity_t bullet_head, *bullet_tail;
+        explosion_t explosion_head, *explosion_tail;
+        debris_t debris_head, *debris_tail;
     } stage;
 } game_state_t;
 

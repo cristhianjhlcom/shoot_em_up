@@ -4,14 +4,13 @@
 #include "input.h"
 #include "stage.h"
 
-// #define SDL_MAIN_HANDLED
+#define SDL_MAIN_HANDLED
 
 int main(int argc, char *argv[])
 {
     long then;
     float remainder;
     memset(&app, 0, sizeof(app_t));
-    memset(&game_state, 0, sizeof(game_state_t));
     app.is_running = init();
     atexit(cleanup);
     init_stage();

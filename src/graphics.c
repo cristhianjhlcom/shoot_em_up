@@ -24,17 +24,28 @@ SDL_Texture *load_texture(const char *filename)
     return texture;
 }
 
-void blit(entity_t *entity)
+void blit_rect(SDL_Texture *texture, int x, int y, SDL_Rect *src)
 {
-    if (SDL_QueryTexture(entity->texture, NULL, NULL, &entity->w, &entity->h) < 0)
+    SDL_Rect dest;
+    dest.x = x;
+    dest.y = y;
+    dest.w = src->w,
+    dest.h = src->h;
+    SDL_RenderCopy(app.renderer, texture, src, &dest);
+}
+
+void blit(SDL_Texture *texture, int x, int y)
+{
+    int w, h;
+    if (SDL_QueryTexture(texture, NULL, NULL, &w, &h) < 0)
     {
         SDL_Log("[blit] %s\n", SDL_GetError());
         return;
     }
     SDL_Rect dest;
-    dest.x = (int) entity->pos.x;
-    dest.y = (int) entity->pos.y;
-    dest.w = entity->w;
-    dest.h = entity->h;
-    SDL_RenderCopy(app.renderer, entity->texture, NULL, &dest);
+    dest.x = x;
+    dest.y = y;
+    dest.w = w;
+    dest.h = h;
+    SDL_RenderCopy(app.renderer, texture, NULL, &dest);
 }
