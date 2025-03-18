@@ -7,11 +7,14 @@
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_scancode.h"
 #include "SDL2/SDL_mixer.h"
+#include "SDL2/SDL_ttf.h"
 
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
+#include "ctype.h"
 
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
@@ -30,6 +33,7 @@
 #define ALIEN_BULLET_SPEED	8
 #define MAX_STARS			500
 #define MAX_SND_CHANNELS	8
+#define MAX_LINE_LENGTH		1024
 
 enum
 {

@@ -3,6 +3,7 @@
 #include "game_state.h"
 #include "input.h"
 #include "stage.h"
+#include "texts.h"
 
 #define SDL_MAIN_HANDLED
 
@@ -15,6 +16,7 @@ int main(int argc, char *argv[])
     atexit(cleanup);
     init_stage();
     init_sounds();
+    init_fonts();
     then = (long) SDL_GetTicks();
     remainder = 0;
     while (app.is_running)

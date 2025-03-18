@@ -7,6 +7,7 @@
 #include "game_state.h"
 #include "util.h"
 #include "sounds.h"
+#include "texts.h"
 
 void init_stage(void);
 

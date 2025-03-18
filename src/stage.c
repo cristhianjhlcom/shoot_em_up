@@ -9,6 +9,7 @@ static SDL_Texture *explosion_texture;
 static int enemy_spawn_timer;
 static int stage_reset_timer;
 static int background_x;
+static int high_score;
 static star_t stars[MAX_STARS];
 
 static void logic(void);
@@ -33,6 +34,7 @@ static void draw_bullets(void);
 static void draw_fighters(void);
 static void draw_debris(void);
 static void draw_explosions(void);
+static void draw_hub(void);
 
 void init_stage(void)
 {
@@ -87,6 +89,7 @@ static void reset_stage(void)
     init_star_field();
     enemy_spawn_timer = 0;
     stage_reset_timer = FPS * 3;
+    game_state.stage.score = 0;
     game_state.delegate.logic = logic;
     game_state.delegate.draw = draw;
 }
@@ -197,6 +200,8 @@ static int bullet_hit_fighter(entity_t *b)
             else
             {
                 play_sound(SND_ALIEN_DIE, CH_ANY);
+                game_state.stage.score++;
+                high_score = MAX(game_state.stage.score, high_score);
             }
             b->health = 0;
             e->health = 0;
@@ -552,6 +557,19 @@ static void draw_fighters(void)
     }
 }
 
+static void draw_hub(void)
+{
+    draw_text(10, 10, 255, 255, 255, "SCORE: %03d", game_state.stage.score);
+    if (game_state.stage.score > 0 && game_state.stage.score == high_score)
+    {
+        draw_text(SCREEN_WIDTH - 16 * 18, 10, 0, 255, 0, "HIGH SCORE: %03d", high_score);
+    }
+    else
+    {
+        draw_text(SCREEN_WIDTH - 16 * 18, 10, 255, 255, 0, "HIGH SCORE: %03d", high_score);
+    }
+}
+
 static void spawn_enemies(void)
 {
     entity_t *enemy;
@@ -608,4 +626,5 @@ static void draw(void)
     draw_debris();
     draw_explosions();
     draw_bullets();
+    draw_hub();
 }
