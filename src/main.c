@@ -14,6 +14,7 @@ int main(int argc, char *argv[])
     app.is_running = init();
     atexit(cleanup);
     init_stage();
+    init_sounds();
     then = (long) SDL_GetTicks();
     remainder = 0;
     while (app.is_running)

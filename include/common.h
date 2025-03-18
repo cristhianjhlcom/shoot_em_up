@@ -6,6 +6,7 @@
 #include "SDL2/SDL_timer.h"
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_scancode.h"
+#include "SDL2/SDL_mixer.h"
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -28,5 +29,22 @@
 #define SIDE_ALIEN			1
 #define ALIEN_BULLET_SPEED	8
 #define MAX_STARS			500
+#define MAX_SND_CHANNELS	8
+
+enum
+{
+	CH_ANY = -1,
+	CH_PLAYER,
+	CH_ALIEN_FIRE
+};
+
+enum
+{
+	SND_PLAYER_FIRE,
+	SND_ALIEN_FIRE,
+	SND_PLAYER_DIE,
+	SND_ALIEN_DIE,
+	SND_MAX
+};
 
 #endif  // COMMON_H

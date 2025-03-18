@@ -29,7 +29,15 @@ bool init(void)
     if (!(IMG_Init(image_flags) & image_flags))
     {
         SDL_Log("SDL image initialization failed %s\n", IMG_GetError());
+        return false;
     }
+
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) == -1)
+    {
+        SDL_Log("SDL mixer initialization failed %s\n", Mix_GetError());
+        return false;
+    }
+    Mix_AllocateChannels(MAX_SND_CHANNELS);
 
     SDL_ShowCursor(0);
 

@@ -180,7 +180,7 @@ static void fire_bullet(void)
     }
     game_state.stage.bullet_tail->next = bullet;
     game_state.stage.bullet_tail = bullet;
-    game_state.player->reload = 8;
+    game_state.player->reload = 20;
 }
 
 static int bullet_hit_fighter(entity_t *b)
@@ -190,6 +190,14 @@ static int bullet_hit_fighter(entity_t *b)
     {
         if (e->side != b->side && collision(b, e))
         {
+            if (e == game_state.player)
+            {
+                play_sound(SND_PLAYER_DIE, CH_PLAYER);
+            }
+            else
+            {
+                play_sound(SND_ALIEN_DIE, CH_ANY);
+            }
             b->health = 0;
             e->health = 0;
             add_explosions(e->pos.x, e->pos.y, 32);
@@ -317,6 +325,7 @@ static void do_player(void)
         if (game_state.keyboard[SDL_SCANCODE_LCTRL] && game_state.player->reload == 0)
         {
             fire_bullet();
+            play_sound(SND_PLAYER_FIRE, CH_PLAYER);
         }
     }
 }
@@ -382,6 +391,7 @@ static void do_enemies(void)
         if (e != game_state.player && game_state.player != NULL && --e->reload <= 0)
         {
             fire_alien_bullet(e);
+            play_sound(SND_ALIEN_FIRE, CH_ALIEN_FIRE);
         }
     }
 }
