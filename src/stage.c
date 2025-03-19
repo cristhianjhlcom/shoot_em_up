@@ -39,6 +39,7 @@ void init_stage(void)
     game_state.stage.points_tail = &game_state.stage.points_head;
     game_state.stage.explosion_tail = &game_state.stage.explosion_head;
     game_state.stage.debris_tail = &game_state.stage.debris_head;
+    game_state.stage.texture_tail = &game_state.stage.texture_head;
     bullet_texture = load_texture("assets/graphics/bullet.png");
     enemy_texture = load_texture("assets/graphics/enemy.png");
     alien_bullet_texture = load_texture("assets/graphics/bullet.png");
@@ -593,14 +594,14 @@ static void draw_fighters(void)
 
 static void draw_hub(void)
 {
-    draw_text(10, 10, 255, 255, 255, "SCORE: %03d", game_state.stage.score);
+    draw_text(10, 10, 255, 255, 255, TEXT_LEFT, "SCORE: %03d", game_state.stage.score);
     if (game_state.stage.score > 0 && game_state.stage.score == high_score)
     {
-        draw_text(SCREEN_WIDTH - 16 * 18, 10, 0, 255, 0, "HIGH SCORE: %03d", high_score);
+        draw_text(SCREEN_WIDTH - 16 * 18, 10, 0, 255, 0, TEXT_RIGHT, "HIGH SCORE: %03d", high_score);
     }
     else
     {
-        draw_text(SCREEN_WIDTH - 16 * 18, 10, 255, 255, 0, "HIGH SCORE: %03d", high_score);
+        draw_text(SCREEN_WIDTH - 16 * 18, 10, 255, 255, 0, TEXT_RIGHT, "HIGH SCORE: %03d", high_score);
     }
 }
 

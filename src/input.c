@@ -18,6 +18,7 @@ static void do_key_up(SDL_KeyboardEvent *event)
 
 void inputs(void)
 {
+    memset(game_state.input_text, '\0', MAX_LINE_LENGTH);
     while (SDL_PollEvent(&game_state.event))
     {
         switch (game_state.event.type)
@@ -30,6 +31,9 @@ void inputs(void)
                 break;
             case SDL_KEYUP:
                 do_key_up(&game_state.event.key);
+                break;
+            case SDL_TEXTINPUT:
+                STRNCPY(game_state.input_text, game_state.event.text.text, MAX_LINE_LENGTH);
                 break;
             default:
                 break;

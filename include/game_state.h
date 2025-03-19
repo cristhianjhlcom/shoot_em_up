@@ -32,6 +32,7 @@ typedef struct
         entity_t points_head, *points_tail;
         int score;
     } stage;
+    char input_text[MAX_LINE_LENGTH];
 } game_state_t;
 
 extern app_t app;

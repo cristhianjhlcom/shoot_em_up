@@ -8,7 +8,7 @@ void init_fonts(void)
 	font_texture = load_texture("assets/fonts/font.png");
 }
 
-void draw_text(int x, int y, int r, int g, int b, const char *format, ...)
+void draw_text(int x, int y, int r, int g, int b, int align, const char *format, ...)
 {
 	int idx, len, c;
 	SDL_Rect rect;
@@ -18,6 +18,15 @@ void draw_text(int x, int y, int r, int g, int b, const char *format, ...)
 	vsprintf(draw_text_buffer, format, args);
 	va_end(args);
 	len = (int) strlen(draw_text_buffer);
+	switch (align)
+	{
+		case TEXT_RIGHT:
+			x -= (len * GLYPH_WIDTH);
+			break;
+		case TEXT_CENTER:
+			x -= (len * GLYPH_WIDTH / 2);
+			break;
+	}
 	rect.w = GLYPH_WIDTH;
 	rect.h = GLYPH_HEIGHT;
 	rect.y = 0;

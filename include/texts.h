@@ -8,6 +8,6 @@
 #include "graphics.h"
 
 void init_fonts(void);
-void draw_text(int x, int y, int r, int g, int b, const char *format, ...);
+void draw_text(int x, int y, int r, int g, int b, int align, const char *format, ...);
 
 #endif // TEXTS_H

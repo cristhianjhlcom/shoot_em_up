@@ -74,6 +74,7 @@ typedef struct
 
 struct highscore_t
 {
+    char name[MAX_SCORE_NAME_LENGTH];
     int recent, score;
 };
 
