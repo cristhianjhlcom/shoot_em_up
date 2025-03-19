@@ -6,6 +6,7 @@ static SDL_Texture *alien_bullet_texture;
 static SDL_Texture *player_texture;
 static SDL_Texture *background;
 static SDL_Texture *explosion_texture;
+static SDL_Texture *points_texture;
 static int enemy_spawn_timer;
 static int stage_reset_timer;
 static int background_x;
@@ -20,6 +21,7 @@ static void init_star_field(void);
 static void clip_player(void);
 static void add_explosions(float x, float y, int num);
 static void add_debris(entity_t *e);
+static void add_points_pods(int x, int y);
 static void do_background(void);
 static void do_star_field(void);
 static void do_player(void);
@@ -28,9 +30,11 @@ static void do_enemies(void);
 static void do_bullets(void);
 static void do_explosions(void);
 static void do_debris(void);
+static void do_points_pods(void);
 static void draw_background(void);
-static void draw_star_field(void);
+// static void draw_star_field(void);
 static void draw_bullets(void);
+static void draw_points_pods(void);
 static void draw_fighters(void);
 static void draw_debris(void);
 static void draw_explosions(void);
@@ -40,6 +44,7 @@ void init_stage(void)
 {
     game_state.stage.fighter_tail = &game_state.stage.fighter_head;
     game_state.stage.bullet_tail = &game_state.stage.bullet_head;
+    game_state.stage.points_tail = &game_state.stage.points_head;
     game_state.stage.explosion_tail = &game_state.stage.explosion_head;
     game_state.stage.debris_tail = &game_state.stage.debris_head;
     bullet_texture = load_texture("assets/graphics/bullet.png");
@@ -48,6 +53,7 @@ void init_stage(void)
     player_texture = load_texture("assets/graphics/player.png");
     background = load_texture("assets/graphics/background.png");
     explosion_texture = load_texture("assets/graphics/explosion.png");
+    points_texture = load_texture("assets/graphics/points.png");
     reset_stage();
 }
 
@@ -68,6 +74,12 @@ static void reset_stage(void)
         game_state.stage.bullet_head.next = e->next;
         free(e);
     }
+    while (game_state.stage.points_head.next)
+    {
+        e = game_state.stage.points_head.next;
+        game_state.stage.points_head.next = e->next;
+        free(e);
+    }
     while (game_state.stage.explosion_head.next)
     {
         ex = game_state.stage.explosion_head.next;
@@ -85,6 +97,7 @@ static void reset_stage(void)
     game_state.stage.bullet_tail = &game_state.stage.bullet_head;
     game_state.stage.explosion_tail = &game_state.stage.explosion_head;
     game_state.stage.debris_tail = &game_state.stage.debris_head;
+    game_state.stage.points_tail = &game_state.stage.points_head;
     init_player();
     init_star_field();
     enemy_spawn_timer = 0;
@@ -199,9 +212,12 @@ static int bullet_hit_fighter(entity_t *b)
             }
             else
             {
+                add_points_pods((int) e->pos.x + e->w / 2, (int) e->pos.y + e->h / 2);
+                /*
                 play_sound(SND_ALIEN_DIE, CH_ANY);
                 game_state.stage.score++;
                 high_score = MAX(game_state.stage.score, high_score);
+                */
             }
             b->health = 0;
             e->health = 0;
@@ -231,7 +247,7 @@ static void clip_player(void)
         }
         if (game_state.player->pos.y > SCREEN_HEIGHT - game_state.player->h)
         {
-            game_state.player->pos.y = (float) (SCREEN_HEIGHT - game_state.player->h);
+            game_state.player->pos.y = (float)(SCREEN_HEIGHT - game_state.player->h);
         }
     }
 }
@@ -269,7 +285,7 @@ static void do_background(void)
 
 static void do_star_field(void)
 {
-    for (int idx = 0; idx < MAX_STARS; idx++)   
+    for (int idx = 0; idx < MAX_STARS; idx++)
     {
         stars[idx].pos.x -= stars[idx].speed;
         if (stars[idx].pos.x < 0)
@@ -365,6 +381,57 @@ static void do_fighters(void)
     }
 }
 
+static void do_points_pods(void)
+{
+    entity_t *e, *prev;
+    prev = &game_state.stage.points_head;
+    for (e = game_state.stage.points_head.next; e != NULL; e = e->next)
+    {
+        // Pod bounce on x axis.
+        if (e->pos.x < 0)
+        {
+            e->pos.x = 0;
+            e->delta.x = -e->delta.x;
+        }
+        if ((int) e->pos.x + e->w > SCREEN_WIDTH)
+        {
+            e->pos.x = (float) (SCREEN_WIDTH - e->w);
+            e->delta.x = -e->delta.x;
+        }
+        // Pod bounce on y axis.
+        if (e->pos.y < 0)
+        {
+            e->pos.y = 0;
+            e->delta.y = -e->delta.y;
+        }
+        if ((int) e->pos.y + e->h > SCREEN_HEIGHT)
+        {
+            e->pos.y = (float) (SCREEN_HEIGHT - e->h);
+            e->delta.y = -e->delta.y;
+        }
+        e->pos.x += e->delta.x;
+        e->pos.y += e->delta.y;
+        if (game_state.player != NULL && collision(e, game_state.player))
+        {
+            e->health = 0;
+            game_state.stage.score++;
+            high_score = MAX(game_state.stage.score, high_score);
+            play_sound(SND_POINTS, CH_POINTS);
+        }
+        if (--e->health <= 0)
+        {
+            if (e == game_state.stage.points_tail)
+            {
+                game_state.stage.points_tail = prev;
+            }
+            prev->next = e->next;
+            free(e);
+            e = prev;
+        }
+        prev = e;
+    }
+}
+
 static void do_debris(void)
 {
     debris_t *d, *prev;
@@ -373,7 +440,7 @@ static void do_debris(void)
     {
         d->pos.x += d->delta.x;
         d->pos.y += d->delta.y;
-        d->delta.y += (float) 0.5;
+        d->delta.y += (float)0.5;
         if (--d->life <= 0)
         {
             if (d == game_state.stage.debris_tail)
@@ -403,26 +470,26 @@ static void do_enemies(void)
 
 static void add_explosions(float x, float y, int num)
 {
-  explosion_t *e;  
-  for (int idx = 0; idx < num; idx++)
-  {
-    e = malloc(sizeof(explosion_t));
-    if (e == NULL)
+    explosion_t *e;
+    for (int idx = 0; idx < num; idx++)
     {
-        printf("Memory Allocation Failed.\n");
-        exit(1);
-    }
-    memset(e, 0, sizeof(explosion_t));
-    game_state.stage.explosion_tail->next = e;
-    game_state.stage.explosion_tail = e;
-    e->pos.x = x + (float) (rand() % 32) - (float) (rand() % 32);
-    e->pos.y = y + (float) (rand() % 32) - (float) (rand() % 32);
-    e->delta.x = (float) (rand() % 10) - (float) (rand() % 10);
-    e->delta.y = (float) (rand() % 10) - (float) (rand() % 10);
-    e->delta.x /= 10;
-    e->delta.y /= 10;
-    switch(rand() % 4)
-    {
+        e = malloc(sizeof(explosion_t));
+        if (e == NULL)
+        {
+            printf("Memory Allocation Failed.\n");
+            exit(1);
+        }
+        memset(e, 0, sizeof(explosion_t));
+        game_state.stage.explosion_tail->next = e;
+        game_state.stage.explosion_tail = e;
+        e->pos.x = x + (float)(rand() % 32) - (float)(rand() % 32);
+        e->pos.y = y + (float)(rand() % 32) - (float)(rand() % 32);
+        e->delta.x = (float)(rand() % 10) - (float)(rand() % 10);
+        e->delta.y = (float)(rand() % 10) - (float)(rand() % 10);
+        e->delta.x /= 10;
+        e->delta.y /= 10;
+        switch (rand() % 4)
+        {
         case 0:
             e->color.r = 255;
             break;
@@ -439,9 +506,36 @@ static void add_explosions(float x, float y, int num)
             e->color.g = 255;
             e->color.b = 255;
             break;
+        }
+        e->color.a = rand() % FPS * 3;
     }
-    e->color.a = rand() % FPS * 3;
-  }
+}
+
+static void add_points_pods(int x, int y)
+{
+    entity_t *e;
+    e = malloc(sizeof(entity_t));
+    if (e == NULL)
+    {
+        printf("Memory Allocation Failed.\n");
+        exit(1);
+    }
+    memset(e, 0, sizeof(entity_t));
+    game_state.stage.points_tail->next = e;
+    game_state.stage.points_tail = e;
+    e->pos.x = (float) x;
+    e->pos.y = (float) y;
+    e->delta.x = (float) -(rand() % 5);
+    e->delta.y = (float) (rand() % 5) - (float) (rand() % 5);
+    e->health = FPS * 10;
+    e->texture = points_texture;
+    if (SDL_QueryTexture(e->texture, NULL, NULL, &e->w, &e->h) < 0)
+    {
+        printf("Could react texture size. %s\n", SDL_GetError());
+        exit(1);
+    }
+    e->pos.x -= (float) e->w / 2;
+    e->pos.y -= (float) e->h / 2;
 }
 
 static void add_debris(entity_t *e)
@@ -463,10 +557,10 @@ static void add_debris(entity_t *e)
             memset(d, 0, sizeof(debris_t));
             game_state.stage.debris_tail->next = d;
             game_state.stage.debris_tail = d;
-            d->pos.x = (float) e->pos.x + (float) e->w / 2;
-            d->pos.y = (float) e->pos.y + (float) e->h / 2;
-            d->delta.x = (float) (rand() % 5) - (float) (rand() % 5);
-            d->delta.y = (float) -(5 + (rand() % 12));
+            d->pos.x = (float)e->pos.x + (float)e->w / 2;
+            d->pos.y = (float)e->pos.y + (float)e->h / 2;
+            d->delta.x = (float)(rand() % 5) - (float)(rand() % 5);
+            d->delta.y = (float)-(5 + (rand() % 12));
             d->life = FPS * 2;
             d->texture = e->texture;
             d->rect.x = x;
@@ -497,29 +591,39 @@ static void draw_background(void)
     }
 }
 
+/*
 static void draw_star_field(void)
 {
     int i, c;
     for (i = 0; i < MAX_STARS; i++)
     {
         c = 32 * stars[i].speed;
-        SDL_SetRenderDrawColor(app.renderer, (Uint8) c, (Uint8) c, (Uint8) c, 255);
+        SDL_SetRenderDrawColor(app.renderer, (Uint8)c, (Uint8)c, (Uint8)c, 255);
         SDL_RenderDrawLine(
             app.renderer,
-            (Uint8) stars[i].pos.x,
-            (Uint8) stars[i].pos.y,
-            (Uint8) stars[i].pos.x + 3,
-            (Uint8) stars[i].pos.y
-        );
+            (Uint8)stars[i].pos.x,
+            (Uint8)stars[i].pos.y,
+            (Uint8)stars[i].pos.x + 3,
+            (Uint8)stars[i].pos.y);
     }
 }
+*/
 
 static void draw_debris(void)
 {
     debris_t *d;
     for (d = game_state.stage.debris_head.next; d != NULL; d = d->next)
     {
-        blit_rect(d->texture, (int) d->pos.x, (int) d->pos.y, &d->rect);
+        blit_rect(d->texture, (int)d->pos.x, (int)d->pos.y, &d->rect);
+    }
+}
+
+static void draw_points_pods(void)
+{
+    entity_t *e;
+    for (e = game_state.stage.points_head.next; e != NULL; e = e->next)
+    {
+        blit(e->texture, (int) e->pos.x, (int) e->pos.y);
     }
 }
 
@@ -530,9 +634,9 @@ static void draw_explosions(void)
     SDL_SetTextureBlendMode(explosion_texture, SDL_BLENDMODE_ADD);
     for (e = game_state.stage.explosion_head.next; e != NULL; e = e->next)
     {
-        SDL_SetTextureColorMod(explosion_texture, (Uint8) e->color.r, (Uint8) e->color.g, (Uint8) e->color.b);
-        SDL_SetTextureAlphaMod(explosion_texture, (Uint8) e->color.a);
-        blit(explosion_texture, (int) e->pos.x, (int) e->pos.y);
+        SDL_SetTextureColorMod(explosion_texture, (Uint8)e->color.r, (Uint8)e->color.g, (Uint8)e->color.b);
+        SDL_SetTextureAlphaMod(explosion_texture, (Uint8)e->color.a);
+        blit(explosion_texture, (int)e->pos.x, (int)e->pos.y);
     }
 }
 
@@ -543,7 +647,7 @@ static void draw_bullets(void)
     {
         if (b->health > 0)
         {
-            blit(b->texture, (int) b->pos.x, (int) b->pos.y);
+            blit(b->texture, (int)b->pos.x, (int)b->pos.y);
         }
     }
 }
@@ -553,7 +657,7 @@ static void draw_fighters(void)
     entity_t *e;
     for (e = game_state.stage.fighter_head.next; e != NULL; e = e->next)
     {
-        blit(e->texture, (int) e->pos.x, (int) e->pos.y);
+        blit(e->texture, (int)e->pos.x, (int)e->pos.y);
     }
 }
 
@@ -609,6 +713,7 @@ static void logic(void)
     do_bullets();
     do_explosions();
     do_debris();
+    do_points_pods();
     spawn_enemies();
     clip_player();
     if (game_state.player == NULL && --stage_reset_timer <= 0)
@@ -621,7 +726,8 @@ static void draw(void)
 {
     // draw_player();
     draw_background();
-    draw_star_field();
+    // draw_star_field();
+    draw_points_pods();
     draw_fighters();
     draw_debris();
     draw_explosions();

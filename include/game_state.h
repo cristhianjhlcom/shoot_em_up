@@ -28,6 +28,7 @@ typedef struct
         entity_t bullet_head, *bullet_tail;
         explosion_t explosion_head, *explosion_tail;
         debris_t debris_head, *debris_tail;
+        entity_t points_head, *points_tail;
         int score;
     } stage;
 } game_state_t;

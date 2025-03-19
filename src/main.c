@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     init_stage();
     init_sounds();
     init_fonts();
-    then = (long) SDL_GetTicks();
+    then = (long)SDL_GetTicks();
     remainder = 0;
     while (app.is_running)
     {
