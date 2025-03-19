@@ -1,3 +1,4 @@
+APP_NAME		= shoot_em_up
 BUILD_DIR 		= build
 SOURCE_DIR 		?= src
 INCLUDE_DIR 	= include
@@ -10,21 +11,22 @@ INCLUDE 		= -I include -I ${SDL2_PATH}/include
 LDLIBS 			= -L ${SDL2_PATH}/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 SOURCES			= $(wildcard ${SOURCE_DIR}/**/*.c ${SOURCE_DIR}/*.c)
 OBJECTS			= $(patsubst ${SOURCE_DIR}/%.c, ${BUILD_DIR}/%.o, $(SOURCES))
-TARGET 			= ${BUILD_DIR}/app.exe
 
 ifeq ($(OS), Windows_NT)
-	# CLEAN 		= del /f ${TARGET} & if exist ${BUILD_DIR} rmdir /s /q ${BUILD_DIR}
+	# CLEAN 	= del /f ${TARGET} & if exist ${BUILD_DIR} rmdir /s /q ${BUILD_DIR}
 	CLEAN 		= rm -f ${TARGET} && [ -d ${BUILD_DIR} ] && rm -r ${BUILD_DIR}
 else
 	CLEAN 		= rm -r ${TARGET} ${BUILD_DIR}
 endif
 
 ifeq (${DEBUG}, 1)
+	TARGET 		= ${BUILD_DIR}/debug_${APP_NAME}
 	CFLAGS		= -Wall -Werror -Wpedantic -Wwrite-strings -Wconversion \
 					-g -DDEBUG -Wshadow -Wmissing-prototypes -Wmissing-declarations \
 					-Wfloat-equal -Wsign-compare -Wundef -Wcast-align -Wstrict-prototypes \
 					-Wno-switch-default -Wold-style-definition -Wmissing-include-dirs
 else
+	TARGET 		= ${BUILD_DIR}/${APP_NAME}
 	CFLAGS		= -Wall -Werror -Wpedantic -Wwrite-strings -Wconversion \
 					-O0 -Wshadow -Wmissing-prototypes -Wmissing-declarations \
 					-Wfloat-equal -Wsign-compare -Wundef -Wcast-align -Wstrict-prototypes \
