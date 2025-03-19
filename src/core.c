@@ -44,8 +44,21 @@ bool init(void)
     return true;
 }
 
+void init_game(void)
+{
+    init_background();
+    init_star_field();
+    init_sounds();
+    init_fonts();
+    init_highscore_table();
+    load_music("assets/musics/Mercury.ogg");
+    play_music(1);
+}
+
 void cleanup(void)
 {
+    Mix_Quit();
+    IMG_Quit();
     SDL_DestroyRenderer(app.renderer);
     SDL_DestroyWindow(app.window);
     app.renderer = NULL;

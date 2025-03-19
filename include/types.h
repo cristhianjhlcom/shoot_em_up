@@ -6,7 +6,17 @@
 typedef struct entity_t entity_t;
 typedef struct debris_t debris_t;
 typedef struct explosion_t explosion_t;
+typedef struct highscore_t highscore_t;
+typedef struct highscores_t highscores_t;
+typedef struct texture_t texture_t;
 // typedef struct star_t star_t;
+
+struct texture_t
+{
+    char name[MAX_NAME_LENGTH];
+    SDL_Texture *texture;
+    texture_t *next;
+};
 
 struct entity_t
 {
@@ -61,5 +71,15 @@ typedef struct
     } pos;
     int speed;
 } star_t;
+
+struct highscore_t
+{
+    int recent, score;
+};
+
+struct highscores_t
+{
+    highscore_t highscore[NUM_HIGHSCORE];
+};
 
 #endif  // TYPES_H

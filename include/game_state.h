@@ -26,6 +26,7 @@ typedef struct
     struct {
         entity_t fighter_head, *fighter_tail;
         entity_t bullet_head, *bullet_tail;
+        texture_t texture_head, *texture_tail;
         explosion_t explosion_head, *explosion_tail;
         debris_t debris_head, *debris_tail;
         entity_t points_head, *points_tail;

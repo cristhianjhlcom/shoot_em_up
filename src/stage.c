@@ -4,26 +4,20 @@ static SDL_Texture *bullet_texture;
 static SDL_Texture *enemy_texture;
 static SDL_Texture *alien_bullet_texture;
 static SDL_Texture *player_texture;
-static SDL_Texture *background;
 static SDL_Texture *explosion_texture;
 static SDL_Texture *points_texture;
 static int enemy_spawn_timer;
 static int stage_reset_timer;
-static int background_x;
 static int high_score;
-static star_t stars[MAX_STARS];
 
 static void logic(void);
 static void draw(void);
 static void reset_stage(void);
 static void init_player(void);
-static void init_star_field(void);
 static void clip_player(void);
 static void add_explosions(float x, float y, int num);
 static void add_debris(entity_t *e);
 static void add_points_pods(int x, int y);
-static void do_background(void);
-static void do_star_field(void);
 static void do_player(void);
 static void do_fighters(void);
 static void do_enemies(void);
@@ -31,8 +25,6 @@ static void do_bullets(void);
 static void do_explosions(void);
 static void do_debris(void);
 static void do_points_pods(void);
-static void draw_background(void);
-// static void draw_star_field(void);
 static void draw_bullets(void);
 static void draw_points_pods(void);
 static void draw_fighters(void);
@@ -51,7 +43,6 @@ void init_stage(void)
     enemy_texture = load_texture("assets/graphics/enemy.png");
     alien_bullet_texture = load_texture("assets/graphics/bullet.png");
     player_texture = load_texture("assets/graphics/player.png");
-    background = load_texture("assets/graphics/background.png");
     explosion_texture = load_texture("assets/graphics/explosion.png");
     points_texture = load_texture("assets/graphics/points.png");
     reset_stage();
@@ -130,16 +121,6 @@ static void init_player(void)
         return;
     }
     game_state.player->side = SIDE_PLAYER;
-}
-
-static void init_star_field(void)
-{
-    for (int idx = 0; idx < MAX_STARS; idx++)
-    {
-        stars[idx].pos.x = rand() % SCREEN_WIDTH;
-        stars[idx].pos.y = rand() % SCREEN_HEIGHT;
-        stars[idx].speed = 1 + rand() % 8;
-    }
 }
 
 static void fire_alien_bullet(entity_t *e)
@@ -272,26 +253,6 @@ static void do_bullets(void)
             b = prev;
         }
         prev = b;
-    }
-}
-
-static void do_background(void)
-{
-    if (--background_x < -SCREEN_WIDTH)
-    {
-        background_x = 0;
-    }
-}
-
-static void do_star_field(void)
-{
-    for (int idx = 0; idx < MAX_STARS; idx++)
-    {
-        stars[idx].pos.x -= stars[idx].speed;
-        if (stars[idx].pos.x < 0)
-        {
-            stars[idx].pos.x = SCREEN_WIDTH + stars[idx].pos.x;
-        }
     }
 }
 
@@ -578,37 +539,6 @@ static void draw_player(void)
 }
 */
 
-static void draw_background(void)
-{
-    SDL_Rect dest;
-    for (int x = background_x; x < SCREEN_WIDTH; x += SCREEN_WIDTH)
-    {
-        dest.x = x;
-        dest.y = 0;
-        dest.w = SCREEN_WIDTH;
-        dest.h = SCREEN_HEIGHT;
-        SDL_RenderCopy(app.renderer, background, NULL, &dest);
-    }
-}
-
-/*
-static void draw_star_field(void)
-{
-    int i, c;
-    for (i = 0; i < MAX_STARS; i++)
-    {
-        c = 32 * stars[i].speed;
-        SDL_SetRenderDrawColor(app.renderer, (Uint8)c, (Uint8)c, (Uint8)c, 255);
-        SDL_RenderDrawLine(
-            app.renderer,
-            (Uint8)stars[i].pos.x,
-            (Uint8)stars[i].pos.y,
-            (Uint8)stars[i].pos.x + 3,
-            (Uint8)stars[i].pos.y);
-    }
-}
-*/
-
 static void draw_debris(void)
 {
     debris_t *d;
@@ -718,7 +648,8 @@ static void logic(void)
     clip_player();
     if (game_state.player == NULL && --stage_reset_timer <= 0)
     {
-        reset_stage();
+        add_highscore(game_state.stage.score);
+        init_highscores();
     }
 }
 
