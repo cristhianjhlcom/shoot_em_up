@@ -2,7 +2,8 @@
 #include "core.h"
 #include "game_state.h"
 #include "input.h"
-#include "highscores.h"
+#include "titles.h"
+// #include "highscores.h"
 // #include "stage.h"
 
 #define SDL_MAIN_HANDLED
@@ -17,7 +18,8 @@ int main(int argc, char *argv[])
     app.is_running = init();
     atexit(cleanup);
     init_game();
-    init_highscores();
+    init_title();
+    // init_highscores();
     then = (long)SDL_GetTicks();
     remainder = 0;
     while (app.is_running)
