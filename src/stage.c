@@ -194,7 +194,7 @@ static int bullet_hit_fighter(entity_t *b)
             }
             else
             {
-                add_points_pods((int) e->pos.x + e->w / 2, (int) e->pos.y + e->h / 2);
+                add_points_pods((int)e->pos.x + e->w / 2, (int)e->pos.y + e->h / 2);
                 /*
                 play_sound(SND_ALIEN_DIE, CH_ANY);
                 game_state.stage.score++;
@@ -355,9 +355,9 @@ static void do_points_pods(void)
             e->pos.x = 0;
             e->delta.x = -e->delta.x;
         }
-        if ((int) e->pos.x + e->w > SCREEN_WIDTH)
+        if ((int)e->pos.x + e->w > SCREEN_WIDTH)
         {
-            e->pos.x = (float) (SCREEN_WIDTH - e->w);
+            e->pos.x = (float)(SCREEN_WIDTH - e->w);
             e->delta.x = -e->delta.x;
         }
         // Pod bounce on y axis.
@@ -366,9 +366,9 @@ static void do_points_pods(void)
             e->pos.y = 0;
             e->delta.y = -e->delta.y;
         }
-        if ((int) e->pos.y + e->h > SCREEN_HEIGHT)
+        if ((int)e->pos.y + e->h > SCREEN_HEIGHT)
         {
-            e->pos.y = (float) (SCREEN_HEIGHT - e->h);
+            e->pos.y = (float)(SCREEN_HEIGHT - e->h);
             e->delta.y = -e->delta.y;
         }
         e->pos.x += e->delta.x;
@@ -452,22 +452,22 @@ static void add_explosions(float x, float y, int num)
         e->delta.y /= 10;
         switch (rand() % 4)
         {
-        case 0:
-            e->color.r = 255;
-            break;
-        case 1:
-            e->color.r = 255;
-            e->color.g = 128;
-            break;
-        case 2:
-            e->color.r = 255;
-            e->color.g = 255;
-            break;
-        default:
-            e->color.r = 255;
-            e->color.g = 255;
-            e->color.b = 255;
-            break;
+            case 0:
+                e->color.r = 255;
+                break;
+            case 1:
+                e->color.r = 255;
+                e->color.g = 128;
+                break;
+            case 2:
+                e->color.r = 255;
+                e->color.g = 255;
+                break;
+            default:
+                e->color.r = 255;
+                e->color.g = 255;
+                e->color.b = 255;
+                break;
         }
         e->color.a = rand() % FPS * 3;
     }
@@ -485,10 +485,10 @@ static void add_points_pods(int x, int y)
     memset(e, 0, sizeof(entity_t));
     game_state.stage.points_tail->next = e;
     game_state.stage.points_tail = e;
-    e->pos.x = (float) x;
-    e->pos.y = (float) y;
-    e->delta.x = (float) -(rand() % 5);
-    e->delta.y = (float) (rand() % 5) - (float) (rand() % 5);
+    e->pos.x = (float)x;
+    e->pos.y = (float)y;
+    e->delta.x = (float)-(rand() % 5);
+    e->delta.y = (float)(rand() % 5) - (float)(rand() % 5);
     e->health = FPS * 10;
     e->texture = points_texture;
     if (SDL_QueryTexture(e->texture, NULL, NULL, &e->w, &e->h) < 0)
@@ -496,8 +496,8 @@ static void add_points_pods(int x, int y)
         printf("Could react texture size. %s\n", SDL_GetError());
         exit(1);
     }
-    e->pos.x -= (float) e->w / 2;
-    e->pos.y -= (float) e->h / 2;
+    e->pos.x -= (float)e->w / 2;
+    e->pos.y -= (float)e->h / 2;
 }
 
 static void add_debris(entity_t *e)
@@ -554,7 +554,7 @@ static void draw_points_pods(void)
     entity_t *e;
     for (e = game_state.stage.points_head.next; e != NULL; e = e->next)
     {
-        blit(e->texture, (int) e->pos.x, (int) e->pos.y);
+        blit(e->texture, (int)e->pos.x, (int)e->pos.y);
     }
 }
 
